@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import PubsService from '../../services/pubs_service';
+import Ratings from './Ratings';
 
 const LeftBar = styled.div `
   height: 100%;
@@ -71,6 +72,8 @@ const Pub = (props) => {
       }
       <hr/>
       <Paragraph>{pub.formatted_address}</Paragraph>
+
+      <Ratings place={props.place} />
     </LeftBar>
   )
 }
