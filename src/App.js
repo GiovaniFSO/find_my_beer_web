@@ -3,6 +3,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 import PubsService from './services/pubs_service';
 import Pub from './components/Pub';
+import NearbyPubs from './components/NearbyPubs';
 
 function App() {
   const [latitude, setLatitude] = useState(0)
@@ -58,6 +59,10 @@ function App() {
           <Marker key="my location" icon="/images/my-location-pin.png" title="Your local" animation="2"
             position={{lat: latitude, lng: longitude}}
           />
+
+          {(latitude != 0 && longitude != 0) &&
+            <NearbyPubs latitude={latitude} longitude={longitude} />
+          }
         </GoogleMap>
       </LoadScript>
     </Fragment>
