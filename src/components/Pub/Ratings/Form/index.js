@@ -1,6 +1,7 @@
 import React, { useDebugValue, useState } from 'react';
 import ReactStars from 'react-rating-stars-component';
 import styled from 'styled-components';
+import RatingService from '../../../../services/ratings'
 
 const NewRating = styled.div`
   padding-bottom: 50px;
@@ -35,10 +36,35 @@ const Form = (props) => {
   const [message, setMessage] = useState('')
   const [value, setValue] = useState(1)
 
+  async function handleSumit(e){
+    e.preventDefault();
+
+    const store_params = {
+      latitude: props.place.geometry.location.lat,
+      longitude: props.place.geometry.location.lng,
+      name: props.place.name,
+      address: props.place.formatted_address,
+      google_place_id: props.place.place_id
+    }
+
+    const rating_params = {
+      value: (value == null) ? 1 : value,
+      opinion: message,
+      user_name: name
+    }
+
+    await RatingService.create(store_params, rating_params)
+
+    props.loadStore()
+
+    setName('')
+    setMessage('')
+  }
+
   return (
     <NewRating>
       <h4>Please let us know your opinion</h4>
-      <form>
+      <form onSubmit={handleSumit}>
         <Input name="name"
           type="text"
           placeholder="Your name"
