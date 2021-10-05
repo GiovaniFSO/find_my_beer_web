@@ -8,14 +8,19 @@ import NearbyPubs from './components/NearbyPubs';
 function App() {
   const [latitude, setLatitude] = useState(0)
   const [longitude, setLongitude] = useState(0)
+  const [location, setLocation] = useState([])
   const [locations, setLocations] = useState([])
   const [selected, setSelected] = useState({})
+
 
   const { REACT_APP_GOOGLE_API_KEY } = process.env
 
   useEffect(() =>{
     setCurrentLocation()
-  }, [])
+    if(latitude === 53.3458948 && longitude === -6.259070) {
+      alert("Will trigger Dublin location to test the app :D")
+    }
+  }, [location])
 
 
   async function setCurrentLocation(){
@@ -24,7 +29,6 @@ function App() {
       setLongitude(position.coords.longitude)
       loadPubs()
     }, function(error){
-      //alert("Will trigger Dublin location to test the app :D")
       setLatitude(53.3458948)
       setLongitude(-6.259070)
       loadPubs()
@@ -33,7 +37,7 @@ function App() {
 
   async function loadPubs(){
     const response = await PubsService.index(latitude, longitude)
-    setLocations(response.data.results)
+    setLocation(setLocations(response.data.results))
   }
 
   return (
@@ -60,7 +64,7 @@ function App() {
             position={{lat: latitude, lng: longitude}}
           />
 
-          {(latitude != 0 && longitude != 0) &&
+          {(latitude !== 0 && longitude !== 0) &&
             <NearbyPubs latitude={latitude} longitude={longitude} />
           }
         </GoogleMap>

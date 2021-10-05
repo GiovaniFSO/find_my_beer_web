@@ -1,4 +1,4 @@
-import React, { useDebugValue, useState } from 'react';
+import React, { useState } from 'react';
 import ReactStars from 'react-rating-stars-component';
 import styled from 'styled-components';
 import RatingService from '../../../../services/ratings'
