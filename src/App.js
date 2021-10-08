@@ -4,6 +4,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import PubsService from './services/pubs_service';
 import Pub from './components/Pub';
 import NearbyPubs from './components/NearbyPubs';
+import { LONGITUDE, LATITUDE } from './constants'
 
 function App() {
   const [latitude, setLatitude] = useState(0)
@@ -12,12 +13,11 @@ function App() {
   const [locations, setLocations] = useState([])
   const [selected, setSelected] = useState({})
 
-
   const { REACT_APP_GOOGLE_API_KEY } = process.env
 
   useEffect(() =>{
     setCurrentLocation()
-    if(latitude === 53.3458948 && longitude === -6.259070) {
+    if( latitude === LATITUDE && longitude === LONGITUDE) {
       alert("Will trigger Dublin location to test the app :D")
     }
   }, [location])
@@ -29,15 +29,16 @@ function App() {
       setLongitude(position.coords.longitude)
       loadPubs()
     }, function(error){
-      setLatitude(53.3458948)
-      setLongitude(-6.259070)
+      setLatitude(LATITUDE)
+      setLongitude(LONGITUDE)
       loadPubs()
     })
   }
 
   async function loadPubs(){
     const response = await PubsService.index(latitude, longitude)
-    setLocation(setLocations(response.data.results))
+    setLocations(response.data.results)
+    setLocation(LATITUDE, LONGITUDE)
   }
 
   return (
